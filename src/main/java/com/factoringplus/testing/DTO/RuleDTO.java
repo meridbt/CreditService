@@ -13,9 +13,7 @@ public class RuleDTO {
 
     private Long id;
 
-    private Rule.Target target;
-
-    private Rule.Relation relation;
+    private Rule.Filter filter;
 
     private Double value;
     

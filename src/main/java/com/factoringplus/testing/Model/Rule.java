@@ -23,12 +23,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Rule {
 
-    public enum Target{
-        SALARY , CLAIM, DEBTOR
-    }
-
-    public enum Relation{
-        LESS, LESS_OR_EQUAL, EQUAL, GREATER_OR_EQUAL, GREATER, NOT_EQUAL
+    public enum Filter{
+        SALARY_NOT_LESS,
+        IS_DEBTOR
     }
 
     @Id
@@ -46,10 +43,7 @@ public class Rule {
     private Boolean enabled;
 
     @Column(nullable = false)
-    private Target target;
-
-    @Column(nullable = false)
-    private Relation relation;
+    private Filter filter;
 
     @Column(nullable = false)
     private Double value;
@@ -58,9 +52,8 @@ public class Rule {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public Rule(Target target, Relation relation, Double value, Product product) {
-        this.target = target;
-        this.relation = relation;
+    public Rule(Filter filter, Double value, Product product) {
+        this.filter = filter;
         this.value = value;
         this.enabled = true;
         this.created = new Date();
@@ -69,8 +62,7 @@ public class Rule {
     }
 
     public Rule(RuleDTO dto, Product product) {
-        this.target = dto.getTarget();
-        this.relation = dto.getRelation();
+        this.filter = dto.getFilter();
         this.value = dto.getValue();
         this.enabled = true;
         this.created = new Date();
@@ -81,8 +73,7 @@ public class Rule {
     public RuleDTO toDto() {
         return new RuleDTO(
             id,
-            target, 
-            relation,
+            filter,
             value
         );
     }
